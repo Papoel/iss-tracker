@@ -29,39 +29,47 @@
 const mymap = L.map('issMap').setView([0, 0], 1)
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-const tiles = L.tileLayer(tileUrl, { attribution })
+const tiles = L.tileLayer(tileUrl, {
+  attribution
+})
 tiles.addTo(mymap)
 
 //- Prametrer l'icone et la personaliser
-  const issIcon = L.icon({
-    iconUrl: '../images/International_Space_Station.svg',
-    iconSize: [50, 32],
-    iconAnchor: [25, 16],
-   });
+const issIcon = L.icon({
+  iconUrl: '../images/International_Space_Station.svg',
+  iconSize: [50, 32],
+  iconAnchor: [25, 16],
+});
 
-const marker = L.marker([0, 0],{icon: issIcon}).addTo(mymap)
+const marker = L.marker([0, 0], {
+  icon: issIcon
+}).addTo(mymap)
 
 // --------------- PARTIE API --------------------
 const api_url = 'https://api.wheretheiss.at/v1/satellites/25544'
 
-getISS()
+let firstTime = true
 
 //?2 :
 async function getISS() {
   const response = await fetch(api_url)
   const data = await response.json()
-
   //+ Destructurer :
-  const {
-    latitude,
-    longitude,
-  } = data
+  console.log(data);
+  const { latitude, longitude, altitude, velocity } = data
 
-  // L.marker([latitude, longitude]).addTo(mymap)
   marker.setLatLng([latitude, longitude])
-
+  if (firstTime) {
+    //? Zoomer sur la position de l'icone au chargement de la page :
+    mymap.setView([latitude, longitude], 6)
+    firstTime = false
+  }
   //? Injecter les coordnnées dans la span
-  document.getElementById('lat').innerHTML = (latitude)
-  document.getElementById('lon').innerHTML = (longitude)
-
+  document.getElementById('lat').innerHTML = latitude.toFixed(2)
+  document.getElementById('lon').innerHTML = longitude.toFixed(2)
+  document.getElementById('alt').innerHTML = (altitude * 1.609).toFixed(1)
+  document.getElementById('vit').innerHTML = (velocity * 1.609344).toFixed(0)
 }
+  //? Suivre en temps (presque) reel les déplacements de ISS
+  getISS()
+  setInterval(getISS, 1000)
