@@ -36,7 +36,7 @@ tiles.addTo(mymap)
 
 //- Prametrer l'icone et la personaliser
 const issIcon = L.icon({
-  iconUrl: '../images/International_Space_Station.svg',
+  iconUrl: '../images/satelite.png',
   iconSize: [50, 32],
   iconAnchor: [25, 16],
 });
