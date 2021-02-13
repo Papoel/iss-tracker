@@ -29,9 +29,7 @@
 const mymap = L.map('issMap').setView([0, 0], 1)
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-const tiles = L.tileLayer(tileUrl, {
-  attribution
-})
+const tiles = L.tileLayer(tileUrl, { attribution })
 tiles.addTo(mymap)
 
 //- Prametrer l'icone et la personaliser
@@ -61,7 +59,7 @@ async function getISS() {
   marker.setLatLng([latitude, longitude])
   if (firstTime) {
     //? Zoomer sur la position de l'icone au chargement de la page :
-    mymap.setView([latitude, longitude], 6)
+    mymap.setView([latitude, longitude], 5)
     firstTime = false
   }
   //? Injecter les coordnnées dans la span
@@ -70,6 +68,6 @@ async function getISS() {
   document.getElementById('alt').innerHTML = (altitude * 1.609).toFixed(1)
   document.getElementById('vit').innerHTML = (velocity * 1.609344).toFixed(0)
 }
-  //? Suivre en temps (presque) reel les déplacements de ISS
-  getISS()
-  setInterval(getISS, 1000)
+//? Suivre en temps (presque) reel les déplacements de ISS
+getISS()
+setInterval(getISS, 1000)
