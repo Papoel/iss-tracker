@@ -15,7 +15,7 @@
 */
 
 /*
- #1 Récupérer les données d'un API -
+ #1 Récupérer les données d'une API -
  #2 Création d'un fonction assychrone
  #3 Utlisation de fetch
  #4 Destructuring pour récupérer dans une variable les données qui m'interesse
@@ -27,7 +27,7 @@
 
 // - Création de la map et tuiles
 const mymap = L.map('issMap').setView([0, 0], 1)
-const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | by Papoel'
 const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 const tiles = L.tileLayer(tileUrl, { attribution })
 tiles.addTo(mymap)
@@ -59,14 +59,15 @@ async function getISS() {
   marker.setLatLng([latitude, longitude])
   if (firstTime) {
     //? Zoomer sur la position de l'icone au chargement de la page :
-    mymap.setView([latitude, longitude], 5)
+    mymap.setView([latitude, longitude], 2.2)
     firstTime = false
   }
   //? Injecter les coordnnées dans la span
   document.getElementById('lat').innerHTML = latitude.toFixed(2)
   document.getElementById('lon').innerHTML = longitude.toFixed(2)
-  document.getElementById('alt').innerHTML = (altitude * 1.609).toFixed(1)
+  document.getElementById('alt').innerHTML = (altitude).toFixed(1)
   document.getElementById('vit').innerHTML = (velocity * 1.609344).toFixed(0)
+  console.log(data);
 }
 //? Suivre en temps (presque) reel les déplacements de ISS
 getISS()
